@@ -34,11 +34,7 @@
 - **解决实际运行问题。** 针对零事件、连续性校正、复杂模型拟合不稳定，以及 Windows 中文路径导致的文件读取问题，建立相应的建模、诊断与输入检查方案。
 - **向非代码读者沟通。** 将数据生成机制、性能指标和失败原因整理成老师可以直接审阅的表格与说明，而不是只展示 R 代码或单个模型输出。
 
-## 团队分工与指导边界
-
 项目由两名成员分工完成。组员也建立了独立的数据生成与模型拟合实现；当前 `combined` 版本整合了两套早期实现中经过核对的部分。我们定期交叉检查，并向指导老师汇报进展，根据反馈调整模拟情景和诊断标准。
-
-因此，在申请材料中更准确的表述是：**我重点负责/参与统计方法整合、R 实现、模型诊断、模拟框架和结果解释，并与一名组员协作、在老师指导下推进研究。** 不应把全部团队成果表述为个人独立完成，也不应把老师的研究指导写成自己的原创结论。
 
 ## 统计设计
 
@@ -121,44 +117,10 @@ log(E[Y_i | u_i]) = log(T_i) + beta_0 + u_i
 
 下一阶段将在团队和指导老师确认方案后，系统改变研究数量、平均发生率、person-time 分布、研究间异质性、NB2 过度离散参数和结构性零概率，并增加正式模拟重复次数。只有完成这些情景后，才会讨论各方法分别适用于哪些数据条件。
 
-## 建议公开的 GitHub 内容
-
-不建议将本地项目文件夹整体上传。一个清晰的公开仓库可以只保留以下内容：
-
-```text
-README.md
-simulation/
-  combined/
-    README.md
-    scenario_config.R
-    combined_ir_simulation.R
-    results/
-      poisson_baseline_k100_B100_seed20260922_performance_summary.csv
-LICENSE
-.gitignore
-```
-
-- `scenario_config.R`：用户可编辑的情景入口；
-- `combined_ir_simulation.R`：数据生成、14 种方法、诊断和汇总引擎；
-- `performance_summary.csv`：一份明确标注为 preliminary/QA 的代表性结果；
-- `simulation/combined/README.md`：运行方式、依赖包和输出说明。
-
-不建议公开 `.RData`、`.Rhistory`、会议记录、含个人信息的文件、课程材料、未经许可再发布的论文 PDF，以及大量重复的中间结果。真实数据如需公开，应先再次确认来源、许可和引用方式。
-
 ## 运行 combined 模拟
 
 需要的 R 包包括 `metafor`、`MASS`、`lme4`、`glmmTMB` 和 `numDeriv`。在 `simulation/combined/scenario_config.R` 中编辑 `COMBINED_IR_SCENARIO`，然后运行该文件即可。默认的 `n_sim = 10` 只用于快速 QA；正式运行前应先完成单次拟合检查并由研究团队确认情景。
 
 程序会输出四类 CSV：生成数据、逐方法结果、性能汇总和诊断记录。每次重复均保留全部 14 个方法，包括失败拟合；失败不会被静默删除。
 
-## 文书老师可提炼的申请主线
-
-这个项目最适合体现的不是“我运行了 14 个模型”，而是以下能力链条：
-
-> 我从一个真实的稀疏事件 Meta 分析问题出发，先界定可比较的统计 estimand，再将两阶段方法与一阶段计数模型纳入统一的 R 模拟框架。我不仅比较 Bias、RMSE 和 coverage，还把收敛、Hessian、参数边界和失败率纳入评价，并通过可追踪随机种子和标准化输出支持复现。在双人协作和老师指导下，我逐步认识到，可靠的生物统计分析不仅需要模型实现，也需要清楚的估计目标、诊断规则、诚实的不确定性表达和面向非技术读者的沟通。
-
 适合使用的关键词包括：`statistical simulation`、`meta-analysis`、`count-data modeling`、`rare events`、`model diagnostics`、`reproducible research`、`collaborative research` 和 `statistical communication`。
-
-## 说明
-
-本仓库展示的是进行中的方法研究和阶段性 QA，不构成临床结论，也不代表已经完成正式模拟研究或发表论文。
